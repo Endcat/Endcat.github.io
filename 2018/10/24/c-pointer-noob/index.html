@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="" class="loading">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Endcat&#39;s Home</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="Fechin,"> 
+    
+    <meta name="author" content="Endcat"> 
+    <link rel="alternative" href="atom.xml" title="Endcat&#39;s Home" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+</head>
+</html>
+<body class="loading">
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">c程序设计学习-指针整理</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+    <div class="section">
+        <div class="article">
+    <div class="main">
+        <h1 class="title">c程序设计学习-指针整理</h1>
+        <div class="stuff">
+            <span>十月 24, 2018</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <p></p><p>c语言程序设计中指针概念在初学时可能会感到困难，为了方便以后学习和复盘，整理一下关于指针的相关内容。</p><p></p>
+<h4><strong>1、为什么要有指针的存在呢？</strong></h4><br><p>指针变量存放着内存的地址。如果在程序中要调用某一变量和函数，可直接引用指针变量实现调用。这与显性的直接用变量名调用有什么区别呢？假设我们存储了一个字符型变量，比如 <code>char a=&quot;A&quot;</code>。当需要使用这个‘A’时，除了直接调用变量a，另一种方式就是调用a的地址，即指向a的指针p(假设定义了<code>char <em>p=&amp;a</em></code>)。显然在调用变量的时候，a占用了一个字节的内存，而指针可能需要更大的内存（在32 位平台里，指针本身占据了4 个字节的长度。）。然而在实际运用中往往用到不止于一个字节的变量，此时运用指针调用变量会节省内存空间。实际上我们写程序的时候定义的所有变量都保存在内存中，可以想象一个大的程序所占用的内存是不容小觑的，在计算机刚被制造出来的时候那些大佬是如何节省每一个字符的。至今内存的占用是每一个合格的程序员所需要注意的事情，至此我们得出一个结论：写程序需要尽可能少的内存，因而指针型变量应运而生。</p><br><h4><strong>2、指针类型的表达</strong></h4><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a; <span class="comment">//简单的整型变量定义</span></span><br><span class="line"><span class="keyword">int</span> a； <span class="comment">//<em>号表示指针，a与</em>结合表示其为一个指针变量，前面int表示其指向内容为int型。所以a是一个返回整型数据的指针。</span></span><br><span class="line"><span class="keyword">int</span> a[]; <span class="comment">//简单的一维数组定义</span></span><br><span class="line"><span class="keyword">int</span> <em>a[]; <span class="comment">//首先a与[]结合表明其为一个一维数组，再与</span></em>结合表明数组里的元素为指针类型，再与int结合说明指针指向类型为整型。</span><br><span class="line"><span class="keyword">int</span> (<em>a)[]; <span class="comment">//与上一个不同，这次首先是a与</span></em>结合表明a为指针型变量，再与[]结合表明其指向内容为一个数组，再与int结合表明数组里的元素为整型。所以a是一个指向由整型数据组成的数组的指针。</span><br><span class="line"><span class="keyword">int</span> *<em>a; <span class="comment">//先与</span></em>结合说明a为指针变量，再结合一个<em>说明指针所指向的元素为指针。即所谓指针的指针。（指针的指针的指针……）</em></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">a</span><span class="params">(<span class="keyword">int</span>)</span></span>; <span class="comment">//含有一个整型形参，返回值为整数的a函数。</span></span><br><span class="line"><span class="keyword">int</span> (a)(<span class="keyword">int</span>); <span class="comment">//a是指向同上一样的函数的指针。</span></span><br><span class="line"><span class="keyword">int</span> <em>(</em>a(<span class="keyword">int</span>))[]; <span class="comment">//我艹这是什么东西。首先a与()结合表明它是一个函数，且含有一个整型形参。再和<em>结合表明返回值为指针。又和[]结合表明该指针指向一个数组。最后与</em>结合表明数组里面的元素为指针。</span></span><br><span class="line"><span class="keyword">void</span> <em>a; <span class="comment">//a是一个指针变量，基类型为void（空类型），不指向具体的对象。</span></em></span><br></pre></td></tr></table></figure><br><h4><strong>3、指针的安全问题</strong></h4><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> ch=<span class="string">‘a’</span>;</span><br><span class="line"><span class="keyword">int</span> pointer;</span><br><span class="line">pointer = (<span class="keyword">int</span> <em>)&amp;ch;</em></span><br><span class="line">pointer = <span class="number">1234</span>;</span><br></pre></td></tr></table></figure><br><p>指针pointer是一个int <em>类型的指针，它指向的类型是int。它指向的地址就是ch的首地址。在32 位程序中，ch占一个字节，int类型占四个字节。最后一条语句不但改变了ch所占的一个字节，还把和ch相临的高地址方向的三个字节也改变了。这三个字节是干什么的？只有编译程序知道，而写程序的人是不太可能知道的。也许这三个字节里存储了非常重要的数据，也许这三个字节里正好是程序的一条代码，而由于你对指针的马虎应用，这三个字节的值被改变，这会造成崩溃性的错误。<br>（这里就有一点buffer overflow的感觉了。）</em></p><br><p>再举一例</p><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> a;</span><br><span class="line"><span class="keyword">int</span> pointer=&amp;a;</span><br><span class="line">pointer++;</span><br><span class="line"><em>pointer = <span class="number">999</span>;</em></span><br></pre></td></tr></table></figure><br><p>这个例子就更加直接了。所以在使用指针时，程序员心里必须非常清楚：我的指针究竟指向了哪里。在用指针访问数组的时候，也要注意不要超出数组的低端和高端界限，否则也会造成类似的错误。</p><br><h4><strong>4、动态内存分配与指针变量</strong></h4><br><p>平常使用的全局变量局部变量实参形参是分配在内存中的栈区域，这些变量需要在程序中声明。c语言还允许内存动态分配区域以存放一些临时数据。这些数据是临时存放在一个特别的自由存储区，称为堆（heap）。不需声明变量或数组，直接使用函数和指针调用。</p><br><p>四个常用函数</p><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span>  <span class="title">malloc</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> size)</span></span>;</span><br><span class="line"><span class="comment">//允许在内存的动态存储区中分配一个长度为size的连续空间，返回值为所分配区域的第一个字节的地址</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <em> <span class="title">calloc</span><span class="params">(<span class="keyword">unsigned</span> n,<span class="keyword">unsigned</span> size)</span></em></span>;</span><br><span class="line"><span class="comment">//同malloc，不同在于用于数组</span></span><br><span class="line"><span class="function"><span class="keyword">void</span>  <span class="title">realloc</span><span class="params">(<span class="keyword">void</span> <em> p,<span class="keyword">unsigned</span> <span class="keyword">int</span> size)</em></span></span>;</span><br><span class="line"><span class="comment">//改变分配大小</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free</span><span class="params">(<span class="keyword">void</span>  p)</span></span>;</span><br><span class="line"><span class="comment">//释放动态空间</span></span><br></pre></td></tr></table></figure><br><p>应用举例</p><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">check</span><span class="params">(<span class="keyword">int</span> <em>)</em></span></span>;</span><br><span class="line">    <span class="keyword">int</span>  p1,i;</span><br><span class="line">    p1 = (<span class="keyword">int</span> <em>)<span class="built_in">malloc</span>(<span class="number">5</span></em><span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">“%d”</span>,p1+<span class="number">1</span>);</span><br><span class="line">    check(p1);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">check</span><span class="params">(<span class="keyword">int</span> <em> p)</em></span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">“They are failed:”</span>);</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)</span><br><span class="line">        <span class="keyword">if</span> (p[i]&lt;<span class="number">60</span>) <span class="built_in">printf</span>(<span class="string">“%d”</span>,p[i]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">“\n”</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><p>在上述程序中其实并没有声明数组变量，而是直接通过malloc函数开辟动态内存。因为malloc返回值为void 型指针变量，所以需要int强制类型转换。</p><br><h4><del>（囧囧填坑中……）</del></h4>
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title="0" data-url="http://link.hhtjim.com/163/5146554.mp3"></li>
+                    
+                        <li title="1" data-url="http://link.hhtjim.com/qq/001faIUs4M2zna.mp3"></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id="gitalk-container" class="comment link" data-ae="false" data-ci="" data-cs="" data-r="" data-o="" data-a="" data-d="false">查看评论</div>
+
+
+    </div>
+    
+        <div class="side">
+            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">1、为什么要有指针的存在呢？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">2、指针类型的表达</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">3、指针的安全问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">4、动态内存分配与指针变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">（囧囧填坑中……）</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>
