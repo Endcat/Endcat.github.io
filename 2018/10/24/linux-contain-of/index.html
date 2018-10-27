@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="" class="loading">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Endcat&#39;s Home</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="Fechin,"> 
+    
+    <meta name="author" content="Endcat"> 
+    <link rel="alternative" href="atom.xml" title="Endcat&#39;s Home" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+</head>
+</html>
+<body class="loading">
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">Linux内核头文件container_of理解</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+    <div class="section">
+        <div class="article">
+    <div class="main">
+        <h1 class="title">Linux内核头文件container_of理解</h1>
+        <div class="stuff">
+            <span>十月 24, 2018</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <p>听师傅的话学习一下linux内核头文件list.h里面的各种指针实现，挑了一个师傅注释了最多的一个点出来理解一下加深一下记忆。<del>（对不起除了中文注释我其实完全看不懂这个头文件在干嘛嘤嘤嘤）</del></p>
+<p>container_of这个宏定义好像有点难看懂的，决定就是你了，先引用一段百度来的解释。</p>
+<blockquote>
+<p>Container_of在Linux内核中是一个常用的宏，用于从包含在某个结构中的指针获得结构本身的指针，通俗地讲就是通过结构体变量中某个成员的首地址进而获得整个结构体变量的首地址。</p>
+</blockquote>
+<p>说的再通俗一点点的话，就是内存里存了一个结构体，想象一下一个地方站了一队人，总要有一个leader是不是鸭。那么我把container_of用在任何一个成员，也就是队里的任何一个人，我就可以知道这个leader的位置在哪里。</p>
+<p>实现方式：</p>
+<p><code>container_of(ptr, type, member) ；</code></p>
+<p>这个宏是这样定义的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> container_of(ptr,type,member)(&#123; \</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">const</span> <span class="title">typeof</span><span class="params">( ((type *)<span class="number">0</span>)-&gt;member )</span> *__mptr </span>= (ptr);    \</span><br><span class="line"></span><br><span class="line">(type *)( (<span class="keyword">char</span> *)__mptr - offsetof(type,member) );&#125;)</span><br></pre></td></tr></table></figure>
+<p>聪明的囧囧看到了一个不认识的offsetof，没错它是另外一个宏。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">define</span> offsetof(type,member) ((size_t)(&amp;(  ((type *)0)-&gt; member )))</span></span><br></pre></td></tr></table></figure>
+<p>我们先来看offsetof是个什么东西吧。</p>
+<p>(type *)0，这个地方作用是把null强制转化为type类型的指针，-&gt;是一个整体，它是用于指向结构体子数据的指针，&amp;是地址运算符。把所有东西拼在一起，作用就是得到member成员在type中的位置（相对位置）。或者说是member成员的地址在type里面的偏移量。结构以内存空间首地址0作为起始地址，则成员地址自然为偏移地址。你看offset就是有这个意思嘛，记忆起来很方便。这里还有一个size_t就是unsigned int的意思。</p>
+<p>我们再回到container_of的第三行.</p>
+<p>(char <em>)__mptr,这个地方mptr是前面定义好的常量先不去管它。因为它和offsetof相减了所以考虑一下应该也是和地址相关的东西。但是为什么要（char </em>）鸭？因为这样可以保证指针相减时是以一个字节为单位进行相减的，保证了程序的正确性，好像char指针就是有这个设定的……最后再换成（type *），即type类型指针。</p>
+<p>哦对了那个看似多出来的斜杠\是用来连接宏定义内容的。</p>
+<p><del>你肯定不喜欢定义都写在一行里面</del></p>
+<p>从道理上讲我们好像不需要container_of定义的第二行，因为第三行已经把结构体地址得出来了。为什么还要第二行嘞？</p>
+<p><del>这里为了体现我们伟大的写linux内核的程序员的缜密无比的逻辑思维……</del></p>
+<p>我们单看后半部分，其实不就是把ptr赋值给mptr嘛。但是这里的处理是为了作编译期间的类型检查，确保传入的ptr是指向结构体的指针。</p>
+<blockquote>
+<p>而在运行期间，这个赋值gcc可以优化掉，不会影响效率。</p>
+</blockquote>
+<p><del>怎么说呢，反正我是一辈子都写不出这种东西的……</del></p>
+<p>到此为止，我们就可以利用container_of来根据一个成员变量的指针来获取指向整个结构体变量的指针，对于应用程序而言，这种机制看似完全没有必要，但是对于设备驱动程序而言，运用container_of就很有必要了，不然为什么是和linux内核相关呢？</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title="0" data-url="http://link.hhtjim.com/163/5146554.mp3"></li>
+                    
+                        <li title="1" data-url="http://link.hhtjim.com/qq/001faIUs4M2zna.mp3"></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id="gitalk-container" class="comment link" data-ae="false" data-ci="" data-cs="" data-r="" data-o="" data-a="" data-d="false">查看评论</div>
+
+
+    </div>
+    
+        <div class="side">
+            
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

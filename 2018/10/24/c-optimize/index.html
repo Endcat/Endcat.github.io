@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="" class="loading">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Endcat&#39;s Home</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="Fechin,"> 
+    
+    <meta name="author" content="Endcat"> 
+    <link rel="alternative" href="atom.xml" title="Endcat&#39;s Home" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+</head>
+</html>
+<body class="loading">
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">C语言优化基础篇</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+    <div class="section">
+        <div class="article">
+    <div class="main">
+        <h1 class="title">C语言优化基础篇</h1>
+        <div class="stuff">
+            <span>十月 24, 2018</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <p>AC不了的代码不是一个好代码，但是能AC的就一定是好代码吗？</p>
+<p><em>Don’t stop baby just keep going on and optimize it!!!</em></p>
+<h4 id="时间优化"><a href="#时间优化" class="headerlink" title="时间优化"></a>时间优化</h4><h5 id="善用指针"><a href="#善用指针" class="headerlink" title="善用指针"></a>善用指针</h5><p>在许多种情况下，可以用指针运算代替数组索引，这样做常常能产生又快又短的代码。与数组索引相比，<strong>指针一般能使代码速度更快，占用空间更少。</strong>使用多维数组时差异更明显。下面的代码作用是相同的，但是效率不一样。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">For (;;)&#123;</span><br><span class="line">    num = <span class="built_in">array</span>[idx++];</span><br><span class="line">&#125;		<span class="comment">//数组索引</span></span><br><span class="line"></span><br><span class="line">ptr = <span class="built_in">array</span></span><br><span class="line"><span class="keyword">for</span> (;;)&#123;</span><br><span class="line">	num = *(ptr++)</span><br><span class="line">&#125;		<span class="comment">//指针索引</span></span><br></pre></td></tr></table></figure>
+<h5 id="提前算好数据查表"><a href="#提前算好数据查表" class="headerlink" title="提前算好数据查表"></a>提前算好数据查表</h5><p>有些数据我们可以提前初始化，比如说100以内的素数表，一年中每个月的天数等等。</p>
+<h5 id="位运算求余"><a href="#位运算求余" class="headerlink" title="位运算求余"></a>位运算求余</h5><p>只适合于除数是2的N次方的情况。其原理就是：对2的N次方求余，就预示着数字将向右移N位；这被右移的N位就是余数。设X对Y求余，Y等于2^N，公式为：X &amp; (2^N - 1)或X&amp;(~Y)。</p>
+<p>位操作只需一个指令周期即可完成，而大部分的C编译器的“%”运算均是调用子程序来完成，代码长、执行速度慢。通常，<strong>只要求是求2n方的余数，均可使用位操作的方法来代替。</strong></p>
+<h5 id="避免整数除法"><a href="#避免整数除法" class="headerlink" title="避免整数除法"></a>避免整数除法</h5><p>整数除法是整数运算中最慢的，所以应该尽可能避免。一种可能减少整数除法的地方是连除，这里除法可以由乘法代替。这个替换的副作用是有可能在算乘积时会溢出，所以只能在一定范围的除法中使用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i,j,k,m;</span><br><span class="line">m = i/j/k;		<span class="comment">//not recommended</span></span><br><span class="line">m = i/(j*k)		<span class="comment">//recommended</span></span><br></pre></td></tr></table></figure>
+<h5 id="使用增量减量操作符"><a href="#使用增量减量操作符" class="headerlink" title="使用增量减量操作符"></a>使用增量减量操作符</h5><p>增量符语句比赋值语句更快，原因在于对大多数CPU来说，对内存字的增、减量操作不必明显地使用取内存和写内存的指令。</p>
+<h5 id="分解小循环"><a href="#分解小循环" class="headerlink" title="分解小循环"></a>分解小循环</h5><p>循环次数较少的循环结构可以将循环部分语句块列举出来。<strong>要充分利用CPU的指令缓存，就要充分分解小的循环。</strong>特别是当循环体本身很小的时候，分解循环可以提高性能。很多编译器并不能自动分解循环。</p>
+<h5 id="Switch语句中根据发生频率来进行case排序"><a href="#Switch语句中根据发生频率来进行case排序" class="headerlink" title="Switch语句中根据发生频率来进行case排序"></a>Switch语句中根据发生频率来进行case排序</h5><p>使用switch和case语句时编译器会将其转化为if/else的嵌套语句。所以使用switch/case时应提前判断个分支的可能性，可以减少判断的次数。</p>
+<h5 id="函数指针表代替switch"><a href="#函数指针表代替switch" class="headerlink" title="函数指针表代替switch"></a>函数指针表代替switch</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Switch <span class="title">SelectMethod</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">case</span> Choice1;&#123;&#125;</span><br><span class="line">    <span class="keyword">case</span> Choice2;&#123;&#125;</span><br><span class="line">    <span class="keyword">case</span> Choice3;&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Better code</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">makeChoice1</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">makeChoice2</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">makeChoice3</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> (*SelectFunction[])()=&#123;makeChoice1,makeChoice2,makeChoice3&#125;;</span><br><span class="line">status = SelectFunction[SelectMethod()]();</span><br></pre></td></tr></table></figure>
+<h4 id="空间优化"><a href="#空间优化" class="headerlink" title="空间优化"></a>空间优化</h4><h5 id="尽量小的数据类型"><a href="#尽量小的数据类型" class="headerlink" title="尽量小的数据类型"></a>尽量小的数据类型</h5><p>选择了越大的数据类型意味着你要在内存里开更多的空间去存储它，遵循尽量小的原则来节省空间。</p>
+<blockquote>
+<p>速查表：</p>
+<p>char -128 ~ +127 (1 Byte)<br>short -32768 ~ + 32767 (2 Bytes)<br>unsigned short 0 ~ 65536 (2 Bytes)<br>int -2147483648 ~ +2147483647 (4 Bytes)<br>unsigned int 0 ~ 4294967295 (4 Bytes)<br>long == int<br>long long -9223372036854775808 ~ +9223372036854775807 (8 Bytes)<br>double 1.7 * 10^308 (8 Bytes)</p>
+<p>unsigned int 0～4294967295<br>long long的最大值：9223372036854775807<br>long long的最小值：-9223372036854775808<br>unsigned long long的最大值：18446744073709551615</p>
+</blockquote>
+<h5 id="结构体成员按数据类型长度排序"><a href="#结构体成员按数据类型长度排序" class="headerlink" title="结构体成员按数据类型长度排序"></a>结构体成员按数据类型长度排序</h5><p>把结构体的成员按照它们的类型长度排序，声明成员时把长的类型放在短的前面。编译器要求把长型数据类型存放在<strong>偶数地址边界</strong>。在申明一个复杂的数据类型 (既有多字节数据又有单字节数据) 时，应该首先存放多字节数据，然后再存放单字节数据，这样可以避免内存的空洞。编译器自动地把结构的实例对齐在内存的偶数边界。偶数的地址方便cpu在一个指令周期内就能读取信息。<del>（具体实现方式不清楚）</del></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title="0" data-url="http://link.hhtjim.com/163/5146554.mp3"></li>
+                    
+                        <li title="1" data-url="http://link.hhtjim.com/qq/001faIUs4M2zna.mp3"></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id="gitalk-container" class="comment link" data-ae="false" data-ci="" data-cs="" data-r="" data-o="" data-a="" data-d="false">查看评论</div>
+
+
+    </div>
+    
+        <div class="side">
+            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#时间优化"><span class="toc-number">1.</span> <span class="toc-text">时间优化</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#善用指针"><span class="toc-number">1.1.</span> <span class="toc-text">善用指针</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#提前算好数据查表"><span class="toc-number">1.2.</span> <span class="toc-text">提前算好数据查表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#位运算求余"><span class="toc-number">1.3.</span> <span class="toc-text">位运算求余</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#避免整数除法"><span class="toc-number">1.4.</span> <span class="toc-text">避免整数除法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#使用增量减量操作符"><span class="toc-number">1.5.</span> <span class="toc-text">使用增量减量操作符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#分解小循环"><span class="toc-number">1.6.</span> <span class="toc-text">分解小循环</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Switch语句中根据发生频率来进行case排序"><span class="toc-number">1.7.</span> <span class="toc-text">Switch语句中根据发生频率来进行case排序</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#函数指针表代替switch"><span class="toc-number">1.8.</span> <span class="toc-text">函数指针表代替switch</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#空间优化"><span class="toc-number">2.</span> <span class="toc-text">空间优化</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#尽量小的数据类型"><span class="toc-number">2.1.</span> <span class="toc-text">尽量小的数据类型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#结构体成员按数据类型长度排序"><span class="toc-number">2.2.</span> <span class="toc-text">结构体成员按数据类型长度排序</span></a></li></ol></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="" class="loading">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Endcat&#39;s Home</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="Fechin,"> 
+    
+    <meta name="author" content="Endcat"> 
+    <link rel="alternative" href="atom.xml" title="Endcat&#39;s Home" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+</head>
+</html>
+<body class="loading">
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">C语言宏定义随记</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+    <div class="section">
+        <div class="article">
+    <div class="main">
+        <h1 class="title">C语言宏定义随记</h1>
+        <div class="stuff">
+            <span>十月 24, 2018</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <h5 id="简单解释"><a href="#简单解释" class="headerlink" title="简单解释"></a>简单解释</h5><p>什么是宏定义呢，简单地说就是数学里的代换吧，举个例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> endcat girl</span></span><br></pre></td></tr></table></figure>
+<p>声明了这句话之后，在程序里凡是出现endcat的地方，就用girl代替它。</p>
+<p><del>（举例子的艺术就是要先自黑一波这样可以加深记忆）</del></p>
+<h5 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h5><p>当然了把endcat当做女孩这对设计程序来说没有什么实际意义，我们举一个实际例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PI 3.1415926535</span></span><br></pre></td></tr></table></figure>
+<p>如果我们用一个精确的浮点数写到我们的程序里（假设你用了很多次）。万一你哪一天想要提高精度了，你岂不是要一个一个去把数字改一下呢？使用了宏定义从一个角度来讲提高了编程效率。</p>
+<h5 id="接续符"><a href="#接续符" class="headerlink" title="接续符"></a>接续符</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> container_of(ptr,type,member)(&#123; \</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">const</span> <span class="title">typeof</span><span class="params">( ((type *)<span class="number">0</span>)-&gt;member )</span> *__mptr </span>= (ptr);    \</span><br><span class="line"></span><br><span class="line">(type *)( (<span class="keyword">char</span> *)__mptr - offsetof(type,member) );&#125;)</span><br></pre></td></tr></table></figure>
+<p>如果你哪一天定义了一大长串的宏，你可以使用接续符反斜杠连接，如上所示。</p>
+<h5 id="注释符"><a href="#注释符" class="headerlink" title="注释符"></a>注释符</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> com1 <span class="comment">//</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> com2 <span class="comment">/*</span></span></span><br><span class="line"><span class="meta"><span class="comment"></span></span></span><br><span class="line"><span class="meta"><span class="comment">#define com3 */</span></span></span><br></pre></td></tr></table></figure>
+<p>这里要清楚一件事情，注释符号是先于预处理指令被处理，编译器是先听注释符的话，再听#define的话。所以我们不能这样写。</p>
+<h5 id="精准代换"><a href="#精准代换" class="headerlink" title="精准代换"></a>精准代换</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> double (a) a+a</span></span><br></pre></td></tr></table></figure>
+<p>define永远是一个负责人的抄写员，如果我们要在程序里实现double (a)*double (a)。实际上编译器执行的是a + a x a + a。看到优先级差异所导致的错误了吗？所以宏定义一个数学表达式时，不要省略你的括号！</p>
+<h5 id="不要溢出"><a href="#不要溢出" class="headerlink" title="不要溢出"></a>不要溢出</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX 100*10000*10000*1000000</span></span><br></pre></td></tr></table></figure>
+<p>你把MAX搞得那么大肯定有问题的呀。</p>
+<h5 id="宏定义也懂逻辑"><a href="#宏定义也懂逻辑" class="headerlink" title="宏定义也懂逻辑"></a>宏定义也懂逻辑</h5><p>在宏定义中我们也可以做到如下实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span>			<span class="comment">//顾名思义就行了，if not def用来判断特定宏有没有被定义过，没有的话就执行下					 面代码块</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>			<span class="comment">//代码块结束</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">undef</span>			<span class="comment">//撤销宏定义</span></span></span><br></pre></td></tr></table></figure>
+<h5 id="奇技淫巧"><a href="#奇技淫巧" class="headerlink" title="奇技淫巧"></a>奇技淫巧</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#define INC_SAT(val) (val = ((val) +1) &gt; (val)) ? (val)+1 : (val))//防止溢出</span><br><span class="line">#define ARR_SIZE(a) (sizeof((a)) / sizeof((a[0]) ) )//返回数组个数</span><br><span class="line">#define UPCASE( c ) ( ((c) &gt;= &apos;a&apos; &amp;&amp; (c) &lt;= &apos;z&apos;) ? ((c) - 0x20) : (c) )//大写</span><br><span class="line">#define RND8( x ) ((((x) + 7) / 8 ) * 8 ) //返回一个比X大的最接近的8的倍数</span><br><span class="line">#define B_PTR( var ) ( (byte *) (void *) &amp;(var) ) //得到一个变量的地址</span><br></pre></td></tr></table></figure>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title="0" data-url="http://link.hhtjim.com/163/5146554.mp3"></li>
+                    
+                        <li title="1" data-url="http://link.hhtjim.com/qq/001faIUs4M2zna.mp3"></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id="gitalk-container" class="comment link" data-ae="false" data-ci="" data-cs="" data-r="" data-o="" data-a="" data-d="false">查看评论</div>
+
+
+    </div>
+    
+        <div class="side">
+            <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#简单解释"><span class="toc-number">1.</span> <span class="toc-text">简单解释</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#数据"><span class="toc-number">2.</span> <span class="toc-text">数据</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#接续符"><span class="toc-number">3.</span> <span class="toc-text">接续符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#注释符"><span class="toc-number">4.</span> <span class="toc-text">注释符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#精准代换"><span class="toc-number">5.</span> <span class="toc-text">精准代换</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#不要溢出"><span class="toc-number">6.</span> <span class="toc-text">不要溢出</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#宏定义也懂逻辑"><span class="toc-number">7.</span> <span class="toc-text">宏定义也懂逻辑</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#奇技淫巧"><span class="toc-number">8.</span> <span class="toc-text">奇技淫巧</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>
