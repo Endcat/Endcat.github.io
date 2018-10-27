@@ -50,7 +50,20 @@
 
         </div>
         <div class="content markdown">
-            
+            <h4 id="为何执念于Hackintosh"><a href="#为何执念于Hackintosh" class="headerlink" title="为何执念于Hackintosh"></a>为何执念于Hackintosh</h4><p> 当然是Android和iOS平台都想去接触一下鸭<del>（你有时间吗逗比）</del>，把自己的Razer blade改造成全栈开发神器！<del>（其实是买不起mbp）</del>当然macOS的UI真的太好看了鸭，没错看一个东西好不好看颜值就行了hiahiahia（肤浅）</p>
+<h4 id="回忆一下步骤吧"><a href="#回忆一下步骤吧" class="headerlink" title="回忆一下步骤吧"></a>回忆一下步骤吧</h4><p>由于windows和macOS毕竟是不一样的操作系统，对于硬件的支持也不一样，自己觉得用win的老一套安装macos肯定不行滴。所以我首先干的事情就是上百度检索“黑苹果安装教程”。<del>（好像是废话）</del></p>
+<h5 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h5><p>这种东西肯定网上一搜一大堆的啦，就像windows有msdn一样。下载镜像的目的主要是把镜像刻到U盘里面作为安装盘，然后通过电脑重启以及一些bios设置实现u盘启动安装。</p>
+<h5 id="硬盘分区"><a href="#硬盘分区" class="headerlink" title="硬盘分区"></a>硬盘分区</h5><p>因为要做win/mac双系统，所以要在原来的固态硬盘里分出来一些空间供mac系统盘使用。</p>
+<p>使用diskgenius或者用windows自带的disk manager在原系统盘中压缩出一个分区，比如说我分出了80G，当然看具体的电脑配置可以自行调整硬盘大小。分出来以后记得指定盘符。</p>
+<h5 id="制作安装盘"><a href="#制作安装盘" class="headerlink" title="制作安装盘"></a>制作安装盘</h5><p>这是应该有一个至少8G容量的u盘还有mac系统的安装镜像。使用transmac工具将镜像写入U盘中。具体操作可以问百度。简单说是先格式化u盘（注意备份），然后在transmac中执行写入操作等待读条完整即可。读条完后windows会提示格式化u盘，这里是因为u盘已经格式化成了mac系统下的文件格式，所以我们不必理睬。在win系统下u盘是无法打开的。我们可以通过diskgenius查看和修改u盘的信息。</p>
+<p>可以发现u盘已经被分为两个分区。一个是系统安装包，还有一个是引导分区。所谓引导可以这样理解，我们在打开电脑的时候其实就做了一次引导的操作。因为多数电脑都是单系统的，所以就默认引导向单系统安装盘。而现在我们制作了u盘安装盘，在下一次重启开机中就会出现引导界面（选择是进入win系统还是mac安装）。</p>
+<h5 id="令人厌烦的efi配置文件"><a href="#令人厌烦的efi配置文件" class="headerlink" title="令人厌烦的efi配置文件"></a>令人厌烦的efi配置文件</h5><p>囧囧最后是没有能够成功吃到黑苹果，原因就是我在网上找不到合适的efi配置文件。（果然雷蛇用户还是太少了么……）所谓的efi配置文件是要根据你的电脑进行量身定制的一个“尺码”，告诉mac安装系统你是一个怎么样的“顾客”。不同的主板架构，不同的cpu和gpu都要相应的在config.plist文件中修改相应的参数。然而修改这个配置文件需要一定的专业知识和操作水平。你用记事本当然可以改，但是你可能很难知道每一个参数代表的意思以及你修改了他们之后会产生怎么样的影响，这些都是要一步步调试出来的。以上，囧囧在不断的重启死机中消减了对黑苹果的兴趣。</p>
+<h4 id="一些后续"><a href="#一些后续" class="headerlink" title="一些后续"></a>一些后续</h4><h5 id="天猫网店专业安装"><a href="#天猫网店专业安装" class="headerlink" title="天猫网店专业安装"></a>天猫网店专业安装</h5><p>其实也不要太过于相信他们。你交了钱之后会先让你下载一些东西（镜像、工具），然后让你打开远程协助工具，一般是TeamViewer，他们就会代替你干我刚才所说的东西（可能他们稍微熟练一点）。我印象比较深的是操作我电脑的店主，因为我的电脑语言设置为英文，我担心他会不会一下子感到生疏，但是没有一点真本事的人真的是不敢来开店的。（狠狠地打我脸了）一般网店都挺负责的，收费也可以，如果安装不成功都是支持全额退款的。</p>
+<p>你说店主他有没有帮我装好？当然是没有的啦。（店主说法是8750h平台还有很多bug所以要在等一段时间）</p>
+<h5 id="重装系统"><a href="#重装系统" class="headerlink" title="重装系统"></a>重装系统</h5><p>囧囧当然自学了一些粗浅的教程，尝试在macOS虚拟机下用专业图形化工具修改config.plist.（当然肯定是改不出什么东西来的啦）。然后由于各种原因修改了原来windows的引导文件，结果就是重启开机时macos无法安装，windows也打不开辽。其实的话我并没有改动什么windows的系统文件，通过pe系统的修复就可以重新回到windows系统的，但是啊我是真的脑抽真的没有想到鸭手贱点了系统恢复出厂设置我的妈呀。然后就是原来用archer主题的博客被我弃用了（这里看一下博客重建通知），各种环境又要重新配过，简直一夜回到解放前。</p>
+<h5 id="感到兴趣的室友-sadness"><a href="#感到兴趣的室友-sadness" class="headerlink" title="感到兴趣的室友@sadness"></a>感到兴趣的室友@sadness</h5><p>我的室友也感兴趣想吃黑苹果，走的是某宝的流程，但是他成功安装了。（为什么我不行…）</p>
+<p>然鹅其实成功安装以后也只是成功了一半而已。黑苹果还是有很多驱动硬件不能适配。（无线网卡不能用、蓝牙不能用、独显驱动要重装……）后续就是室友弄着弄着也进不了macOS了hiahiahia（幸灾乐祸）。</p>
+
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
                 <source type="audio/mpeg" src="">
@@ -72,7 +85,7 @@
     </div>
     
         <div class="side">
-            
+            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#为何执念于Hackintosh"><span class="toc-number">1.</span> <span class="toc-text">为何执念于Hackintosh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#回忆一下步骤吧"><span class="toc-number">2.</span> <span class="toc-text">回忆一下步骤吧</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#下载镜像"><span class="toc-number">2.1.</span> <span class="toc-text">下载镜像</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#硬盘分区"><span class="toc-number">2.2.</span> <span class="toc-text">硬盘分区</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#制作安装盘"><span class="toc-number">2.3.</span> <span class="toc-text">制作安装盘</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#令人厌烦的efi配置文件"><span class="toc-number">2.4.</span> <span class="toc-text">令人厌烦的efi配置文件</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#一些后续"><span class="toc-number">3.</span> <span class="toc-text">一些后续</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#天猫网店专业安装"><span class="toc-number">3.1.</span> <span class="toc-text">天猫网店专业安装</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#重装系统"><span class="toc-number">3.2.</span> <span class="toc-text">重装系统</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#感到兴趣的室友-sadness"><span class="toc-number">3.3.</span> <span class="toc-text">感到兴趣的室友@sadness</span></a></li></ol></li></ol>
         </div>
     
 </div>
