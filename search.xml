@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2018/11/25/hello-world/"/>
+      <url>/2018/11/25/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>This page for markdown testing.</p><h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><h3 id="三级标题"><a href="#三级标题" class="headerlink" title="三级标题"></a>三级标题</h3><h4 id="四级标题"><a href="#四级标题" class="headerlink" title="四级标题"></a>四级标题</h4><h5 id="五级标题"><a href="#五级标题" class="headerlink" title="五级标题"></a>五级标题</h5><h6 id="六级标题"><a href="#六级标题" class="headerlink" title="六级标题"></a>六级标题</h6><p><em>斜体</em> <strong>粗体</strong> <em><strong>斜粗体</strong></em> <del>删除线</del> <u>下划线</u></p><hr><p>分割线</p><hr><ul><li>无序列表</li><li>无序列表</li></ul><ol><li>有序列表</li><li>有序列表</li></ol><ul><li>嵌套使用列表<ol><li>嵌套使用列表</li><li>嵌套使用列表<ul><li>嵌套使用列表</li></ul></li></ol></li></ul><blockquote><p>区块</p><blockquote><p>区块</p><blockquote><ul><li>区块列表</li></ul></blockquote></blockquote></blockquote><p><code>代码块</code></p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br></pre></td></tr></table></figure><p><a href="https://mashiro.link/">插入链接，返回主页</a><br><img src="https://www.gravatar.com/avatar/0d0507103cf7667ad0fd36d2e45632a8"></p><table><thead><tr><th align="left">表头</th><th align="right">表头</th><th align="center">表头</th><th>表头</th></tr></thead><tbody><tr><td align="left">左</td><td align="right">右</td><td align="center">中</td><td>默认</td></tr><tr><td align="left">左</td><td align="right">右</td><td align="center">中</td><td>默认</td></tr></tbody></table>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
+</search>
